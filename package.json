@@ -1,0 +1,9 @@
+{
+  "name": "ats-boards",
+  "version": "1.0.0",
+  "description": "Read job listings straight from Workday, Greenhouse, Ashby, Lever, Workable, SmartRecruiters, BambooHR, Breezy and Personio. One normalized job record, no proxies.",
+  "type": "module",
+  "main": "src/ats.mjs",
+  "keywords": ["ats","jobs","greenhouse","workday","ashby","lever","workable","smartrecruiters","bamboohr","breezy","personio","job-board","jobs-api","scraping"],
+  "license": "MIT"
+}
