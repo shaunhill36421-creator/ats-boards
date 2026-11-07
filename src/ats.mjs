@@ -221,6 +221,26 @@ export const ADAPTERS = {
       }));
     },
   },
+  // Recruitee. Bảng công khai, không cần khoá. Có sẵn mô tả nên không phải gọi thêm lần nữa.
+  recruitee: {
+    test: s => `https://${s}.recruitee.com/api/offers/`,
+    async fetch(s) {
+      const d = await J(`https://${s}.recruitee.com/api/offers/`);
+      return (d?.offers || []).map(j => ({
+        ...base('recruitee', s),
+        jobId: String(j.id),
+        title: j.title ?? null,
+        url: j.careers_url ?? `https://${s}.recruitee.com/o/${j.slug}`,
+        location: j.location || [j.city, j.country].filter(Boolean).join(', ') || null,
+        department: j.department ?? null,
+        // Hybrid KHÔNG phải remote. Gộp hai cái là trả sai cho người lọc "remote only".
+        remote: typeof j.remote === 'boolean' ? j.remote : (j.on_site === true ? false : null),
+        employmentType: j.employment_type_code ?? null,
+        postedAt: j.published_at ?? j.created_at ?? null,
+        description: txt(j.description),
+      }));
+    },
+  },
   // Rippling ATS. Bảng công khai, trả mảng thẳng, không cần khoá.
   // Trang danh sách không kèm mô tả, ngày đăng hay loại hợp đồng: Rippling không phát ra.
   // Thà để trống còn hơn bịa, nên các trường đó là null.

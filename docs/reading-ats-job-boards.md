@@ -4,9 +4,9 @@ Most job data is scraped the hard way: point a crawler at Indeed or LinkedIn, bu
 
 The companies themselves are the opposite. They publish their openings on purpose, in JSON, on endpoints that are not defending themselves, because an unseen job posting is a job posting that failed. If you read those endpoints instead, there is nothing to get past.
 
-This is a map of the ten applicant tracking systems that cover most of the market, and the four traps that cost real time.
+This is a map of the eleven applicant tracking systems that cover most of the market, and the four traps that cost real time.
 
-## The ten platforms
+## The eleven platforms
 
 | Platform | Board reference | Shape of the endpoint |
 |---|---|---|
@@ -18,10 +18,11 @@ This is a map of the ten applicant tracking systems that cover most of the marke
 | BambooHR | `subdomain` | `<subdomain>.bamboohr.com/careers/list` |
 | Breezy | `subdomain` | `<subdomain>.breezy.hr/json` |
 | Personio | `subdomain` | `<subdomain>.jobs.personio.de/search.json` |
+| Recruitee | `subdomain` | `<subdomain>.recruitee.com/api/offers/` |
 | Rippling | `board slug` | `api.rippling.com/platform/api/ats/v1/board/<slug>/jobs` |
 | Workday | `tenant.wdN/SiteName` | POST `…/wday/cxs/<tenant>/<site>/jobs` |
 
-Nine of those take a single slug you can usually read off the company's careers link. Then there is Workday.
+Ten of those take a single slug you can usually read off the company's careers link. Then there is Workday.
 
 ## Trap 1: Workday needs three pieces, and hides all of them
 
@@ -113,6 +114,6 @@ Workday list pages say `Posted Yesterday` and `Posted 30+ Days Ago`. Turn those 
 
 ## The code
 
-The ten readers above are MIT-licensed: **https://github.com/shaunhill36421-creator/ats-boards**
+The eleven readers above are MIT-licensed: **https://github.com/shaunhill36421-creator/ats-boards**
 
 If you would rather not keep a company-to-board map yourself, the hosted version ships 653 companies already resolved, 66 of them on Workday: **https://apify.com/alexdany/company-jobs-api**

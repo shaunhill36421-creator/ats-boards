@@ -1,6 +1,6 @@
 # ats-boards
 
-Read job listings straight from the ATS a company actually uses: **Workday, Greenhouse, Ashby, Lever, Workable, SmartRecruiters, BambooHR, Breezy, Personio and Rippling**. One function, one normalized job record, no proxies.
+Read job listings straight from the ATS a company actually uses: **Workday, Greenhouse, Ashby, Lever, Workable, SmartRecruiters, BambooHR, Breezy, Personio, Recruitee and Rippling**. One function, one normalized job record, no proxies.
 
 ```js
 import { fetchJobs } from './src/ats.mjs';
@@ -14,7 +14,7 @@ const jobs = await fetchJobs('greenhouse', 'stripe', { limit: 50 });
 
 Job-board scrapers fight anti-bot systems every day: residential proxies, blocked runs, broken selectors. But the companies themselves publish their openings on purpose, as JSON, on endpoints that are not defending themselves against you. Reading those endpoints is cheaper, faster and does not break.
 
-This repo is the adapter layer: ten platforms, one shape.
+This repo is the adapter layer: eleven platforms, one shape.
 
 ## Supported platforms
 
@@ -28,6 +28,7 @@ This repo is the adapter layer: ten platforms, one shape.
 | BambooHR | `subdomain` | `zapier` |
 | Breezy | `subdomain` | `breezy` |
 | Personio | `subdomain` | `personio` |
+| Recruitee | `subdomain` | `bunq` |
 | Rippling | `board slug` | `rippling` |
 | Workday | `tenant.wdN/SiteName` | `nvidia.wd5/NVIDIAExternalCareerSite` |
 
@@ -47,7 +48,7 @@ A second trap: a company's careers link can point at a **different** tenant afte
 
 ## How this actually works
 
-A longer write-up of the ten endpoints and the four traps that cost real time (Workday's hidden tenant/pod/site, careers links that belong to a parent company after an acquisition, why `429` must never be read as "board is dead", and the maintenance redirect that fails a whole pod at once):
+A longer write-up of the eleven endpoints and the four traps that cost real time (Workday's hidden tenant/pod/site, careers links that belong to a parent company after an acquisition, why `429` must never be read as "board is dead", and the maintenance redirect that fails a whole pod at once):
 
 **[docs/reading-ats-job-boards.md](docs/reading-ats-job-boards.md)**
 
