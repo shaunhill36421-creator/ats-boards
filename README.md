@@ -42,11 +42,11 @@ A second trap: a company's careers link can point at a **different** tenant afte
 
 ## Rate limits, honestly
 
-`429` means slow down, not "board is dead". Workable in particular will rate-limit a burst of parallel requests. Retry with backoff and respect `Retry-After`; never delete a board from your list because one burst returned 429.
+`429` means slow down, not "board is dead". Neither does a `303` to `community.workday.com/maintenance-page`: Workday patches one pod at a time, so every tenant on `wd1` or `wd5` can fail together for hours while the boards themselves are fine. Keep `redirect: 'manual'` on the Workday POST or that window reaches you as an unexplained HTML parse error. Workable in particular will rate-limit a burst of parallel requests. Retry with backoff and respect `Retry-After`; never delete a board from your list because one burst returned 429.
 
 ## How this actually works
 
-A longer write-up of the nine endpoints and the three traps that cost real time (Workday's hidden tenant/pod/site, careers links that belong to a parent company after an acquisition, and why `429` must never be read as "board is dead"):
+A longer write-up of the nine endpoints and the four traps that cost real time (Workday's hidden tenant/pod/site, careers links that belong to a parent company after an acquisition, why `429` must never be read as "board is dead", and the maintenance redirect that fails a whole pod at once):
 
 **[docs/reading-ats-job-boards.md](docs/reading-ats-job-boards.md)**
 

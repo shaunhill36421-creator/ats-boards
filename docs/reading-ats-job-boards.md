@@ -4,7 +4,7 @@ Most job data is scraped the hard way: point a crawler at Indeed or LinkedIn, bu
 
 The companies themselves are the opposite. They publish their openings on purpose, in JSON, on endpoints that are not defending themselves, because an unseen job posting is a job posting that failed. If you read those endpoints instead, there is nothing to get past.
 
-This is a map of the nine applicant tracking systems that cover most of the market, and the three traps that cost real time.
+This is a map of the nine applicant tracking systems that cover most of the market, and the four traps that cost real time.
 
 ## The nine platforms
 
@@ -71,6 +71,40 @@ else suspect.push(entry);          // retried later, serially, never deleted
 ```
 
 The same rule applies in reverse: an empty board is not a dead board. Companies pause hiring and come back.
+
+## Trap 4: Workday sleeps a whole pod at once, and it looks exactly like death
+
+On 2026-11-07 a check across 66 Workday boards reported 60 of them broken, with the same error from each: `Unexpected token '<', "<!DOCTYPE "...`. The six survivors had one thing in common that was not obvious at first glance: their pods were `wd12`, `wd115`, `wd501` and `wd504`. Every failure sat on `wd1`, `wd3` or `wd5`.
+
+The endpoint was not returning HTML. It was returning a redirect, and `fetch` was following it:
+
+```
+HTTP/2 303
+location: https://community.workday.com/maintenance-page
+```
+
+Workday patches its infrastructure one pod at a time, and during that window every tenant on the pod answers the jobs API with a 303 to that page. Follow the redirect and you get a marketing page; parse it as JSON and you get a syntax error that names no cause. Run a checker that deletes anything that fails, and in one pass you lose Nike, Target, Intel, NVIDIA, Boeing, Chevron, Caterpillar, Medtronic and fifty more — companies whose boards are perfectly alive and will answer again in a few hours.
+
+Stop following the redirect, and the cause names itself:
+
+```js
+const r = await fetch(url, { method: 'POST', redirect: 'manual', /* … */ });
+if (r.status >= 300 && r.status < 400) {
+  const loc = r.headers.get('location') || '';
+  if (/maintenance|community\.workday\.com/i.test(loc)) {
+    throw new Error('WORKDAY_MAINTENANCE: pod is in a maintenance window, not a dead board');
+  }
+}
+```
+
+Two things follow from this being per-pod rather than per-company. Retrying is pointless: a maintenance window runs for hours, so four backoff attempts only cost you time. And the first board that reports maintenance tells you about every other tenant sharing that pod, so you can skip them all in the same run instead of spending one request each to learn the same fact fifty more times:
+
+```js
+const pod = (slug.match(/\.(wd\d+)\b/) || [])[1];
+if (pod && sleepingPods.has(pod)) continue;      // learned from an earlier board
+```
+
+The honest way to report it is to say which pods were asleep and that those boards are live, not missing. A caller who sees "60 companies failed" starts hunting for a bug in your code. A caller who sees "60 companies on wd1 and wd5 are in a Workday maintenance window, run again later" simply runs again later.
 
 ## Normalizing dates
 

@@ -37,14 +37,24 @@ const JP = async (url, body, attempts = 4) => {
         headers: { 'user-agent': UA, accept: 'application/json', 'content-type': 'application/json' },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(25000),
+        redirect: 'manual',
       });
       if (r.ok) return r.json();
+      // Workday takes a whole pod offline with a 303 to its maintenance page. Let fetch follow
+      // that redirect and you get HTML back, then conclude the board is dead. It is not: it is asleep.
+      if (r.status >= 300 && r.status < 400) {
+        const loc = r.headers.get('location') || '';
+        if (/maintenance|community\.workday\.com/i.test(loc)) {
+          throw new Error('WORKDAY_MAINTENANCE: this Workday pod is in a maintenance window, not a dead board - retry later');
+        }
+        throw new Error(`HTTP ${r.status} -> ${loc.slice(0, 80)}`);
+      }
       if (r.status === 404 || r.status === 403 || r.status === 400) throw new Error(`HTTP ${r.status}`);
       const retryAfter = Number(r.headers.get('retry-after'));
       last = new Error(`HTTP ${r.status}`);
       await sleep(Number.isFinite(retryAfter) && retryAfter > 0 ? Math.min(retryAfter * 1000, 20000) : 800 * 2 ** i);
     } catch (e) {
-      if (/HTTP (404|403|400)/.test(e.message)) throw e;
+      if (/HTTP (404|403|400)|WORKDAY_MAINTENANCE|HTTP 3\d\d ->/.test(e.message)) throw e;
       last = e;
       await sleep(800 * 2 ** i);
     }
