@@ -221,6 +221,30 @@ export const ADAPTERS = {
       }));
     },
   },
+  // Rippling ATS. Bảng công khai, trả mảng thẳng, không cần khoá.
+  // Trang danh sách không kèm mô tả, ngày đăng hay loại hợp đồng: Rippling không phát ra.
+  // Thà để trống còn hơn bịa, nên các trường đó là null.
+  rippling: {
+    test: s => `https://api.rippling.com/platform/api/ats/v1/board/${s}/jobs`,
+    async fetch(s) {
+      const d = await J(`https://api.rippling.com/platform/api/ats/v1/board/${s}/jobs`);
+      return (Array.isArray(d) ? d : []).map(j => {
+        const noi = j.workLocation?.label ?? j.workLocation?.id ?? null;
+        return {
+          ...base('rippling', s),
+          jobId: String(j.uuid),
+          title: String(j.name ?? '').trim() || null,
+          url: j.url ?? `https://ats.rippling.com/${s}/jobs/${j.uuid}`,
+          location: noi,
+          department: j.department?.label ?? j.department?.id ?? null,
+          postedAt: null,
+          remote: noi ? /remote|anywhere/i.test(noi) : null,
+          employmentType: null,
+          description: null,
+        };
+      });
+    },
+  },
   personio: {
     test: s => `https://${s}.jobs.personio.de/xml`,
     async fetch(s) {
