@@ -52,7 +52,7 @@ A longer write-up of the nine endpoints and the three traps that cost real time 
 
 ## Hosted version
 
-If you want this as a ready-to-run API with **600 companies already resolved** (Nike, Target, Comcast, Caterpillar, Chevron, HP, Medtronic, 3M, NVIDIA, Stripe and 590 more, 63 of them on Workday), it runs on Apify:
+If you want this as a ready-to-run API with **653 companies already resolved** (Nike, Target, Comcast, Caterpillar, Chevron, HP, Medtronic, 3M, NVIDIA, Stripe and 643 more, 66 of them on Workday), it runs on Apify:
 
 **https://apify.com/alexdany/company-jobs-api**
 
