@@ -14,6 +14,7 @@ whose link did not resolve were dropped rather than shipped. Click any of them.
 |---|---|---|
 | `all-industries.csv` | the whole set, spread across companies | 60 |
 | `engineering.csv` | titles naming engineer / developer / architect | 60 |
+| `remote.csv` | roles the company itself marks as remote | 60 |
 | `mobile.csv` | iOS, Android, Flutter, React Native, Swift, Kotlin | 60 |
 | `devops.csv` | DevOps, SRE, platform and infrastructure engineering | 60 |
 | `food.csv` | food, beverage, culinary, grocery | 51 |
