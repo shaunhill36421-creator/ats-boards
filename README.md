@@ -54,11 +54,11 @@ A longer write-up of the eleven endpoints and the four traps that cost real time
 
 ## Hosted version
 
-If you want this as a ready-to-run API with **653 companies already resolved** (Nike, Target, Comcast, Caterpillar, Chevron, HP, Medtronic, 3M, NVIDIA, Stripe and 643 more, 66 of them on Workday), it runs on Apify:
+If you want this as a ready-to-run API with **709 companies already resolved** (Nike, Target, Comcast, Caterpillar, Chevron, HP, Medtronic, 3M, NVIDIA, Stripe and 699 more, 92 of them on Workday), holding **106,829 open roles** when last counted, it runs on Apify:
 
 **https://apify.com/alexdany/company-jobs-api**
 
-Give it a company domain, or no companies at all and a keyword, and it returns normalized jobs. From $0.60 per 1,000 jobs.
+Give it a company domain, or no companies at all and a keyword, and it returns normalized jobs. From $1.50 per 1,000 jobs.
 
 ## License
 

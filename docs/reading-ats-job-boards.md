@@ -116,4 +116,4 @@ Workday list pages say `Posted Yesterday` and `Posted 30+ Days Ago`. Turn those 
 
 The eleven readers above are MIT-licensed: **https://github.com/shaunhill36421-creator/ats-boards**
 
-If you would rather not keep a company-to-board map yourself, the hosted version ships 653 companies already resolved, 66 of them on Workday: **https://apify.com/alexdany/company-jobs-api**
+If you would rather not keep a company-to-board map yourself, the hosted version ships 709 companies already resolved, 66 of them on Workday: **https://apify.com/alexdany/company-jobs-api**
